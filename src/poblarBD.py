@@ -134,7 +134,6 @@ def createAdmin():
 def createLider():
     """ asigna lider a un proyecto """
     from mgrProject import MgrProject
-
     MgrProject().asignarLider("proyecto5","juani")
     MgrProject().asignarLider("proyecto4","fran")
     MgrProject().asignarLider("proyecto2","romi")
