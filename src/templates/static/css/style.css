@@ -12,7 +12,10 @@
 */
 
 body {
-	background: #E2DDCB;
+	background: #20B2AA;
+        background-image:url(http://www.todoparamyspace.com/graphics/layouts/hero.jpg); 
+        background-position:Top Center; background-attachment:fixed; 
+        background-repeat:repeat-y;
 	width: 980px;
 	color: #333333;
 	font-size: 12px;

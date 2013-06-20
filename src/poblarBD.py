@@ -134,8 +134,9 @@ def createAdmin():
 def createLider():
     """ asigna lider a un proyecto """
     from mgrProject import MgrProject
-    MgrProject().asignarLider("proyecto5","fran")
-    MgrProject().asignarLider("proyecto4","juani")
+
+    MgrProject().asignarLider("proyecto5","juani")
+    MgrProject().asignarLider("proyecto4","fran")
     MgrProject().asignarLider("proyecto2","romi")
     
 def configurarPermiso():
@@ -148,8 +149,9 @@ def configurarPermiso():
 def usuariosAProyecto():
     """ asigna/desasigna usuarios a proyecto """
     from mgrProject import MgrProject
-    MgrProject().asignarUsuario("proyecto4", "fran", "desarrollador", "asigne rol a usuario")
+
     MgrProject().asignarUsuario("proyecto4", "juani", "desarrollador", "asigne rol a usuario")
+    MgrProject().asignarUsuario("proyecto4", "fran", "desarrollador", "asigne rol a usuario")
     MgrProject().desasignarUsuario("proyecto4", "fran","desarrollador"+"-"+"proyecto4"+"-"+"fran")
 
     

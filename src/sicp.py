@@ -859,7 +859,8 @@ def showFase(nombre):
                descripcion = fase.descripcion, 
                fechaDeCreacion = fase.fechaDeCreacion,
                orden = fase.orden,
-               estado = fase.estado)
+               estado = fase.estado,
+               listaItem = [])
         if request.method == 'POST':
             if request.form.get('edit', None) == "Modificar Fase":
                 return redirect(url_for('editFase', nombre = fase.nombre))
@@ -867,6 +868,8 @@ def showFase(nombre):
                 return redirect(url_for('deleteFase', nombre = fase.nombre))
             elif request.form.get('state', None) == "Modificar Estado de Fase":
                 return redirect(url_for('editFaseState', nombre = fase.nombre))
+            elif request.form.get('asignar', None) == "Asignar Item":
+                return redirect(url_for('asignarItem', nombre = fase.nombre))
 	return render_template(app.config['DEFAULT_TPL']+'/showFase.html',
 			       conf = app.config,
 			       form = form)
@@ -937,7 +940,37 @@ def addFase():
                 conf = app.config,
                 form = CreateFormFase())
                 
-                
+@app.route('/asignarItem/<path:nombre>.html', methods=['GET','POST'])
+def asignarItem(nombre):
+    """ Agrega una fase a un proyecto"""
+    from models import Item
+    from form import CreateFormItem
+    from mgrItem import MgrItem
+    from mgrFase import MgrFase
+    if g.user is None:
+        return redirect(url_for('login'))
+    else:
+ 
+        if request.method == 'POST':
+            form = CreateFormItem(request.form, request.form['nombre'], 
+                        version = request.form['version'],
+                        complejidad = request.form['complejidad'], 
+                        costo = request.form['costo'])
+            if form.validate():
+                en = Item(nombre = request.form['nombre'],
+                            version = request.form['version'], 
+                            complejidad = request.form['complejidad'], 
+                            costo = request.form ['costo'])    
+                MgrFase().asignarItem(nombre, en)
+                flash('Se ha creado correctamente el item')
+                return redirect(url_for('listFase'))
+            else:
+                return render_template(app.config['DEFAULT_TPL']+'/asignarItem.html',
+                            conf = app.config,
+                            form = form )
+    return render_template(app.config['DEFAULT_TPL']+'/asignarItem.html',
+                conf = app.config,
+                form = CreateFormItem())
 # ADMINISTRAR TIPO DE ATRIBUTO
 
 
@@ -1122,7 +1155,7 @@ def relTipoDeAtribxTipoDeItem(nombre):
                 
 @app.route('/relTipodeItemxFase/<path:nombre>.html', methods=['GET','POST'])
 def relTipodeItemxFase(nombre):
-    """Controlador para relacionar un tipo de atributo a un tipo de item"""
+    """Controlador para relacionar un tipo de atributo a una fase"""
     from mgrFase import MgrFase
     from mgrTipoDeItem import MgrTipoDeItem
     if g.user is None:

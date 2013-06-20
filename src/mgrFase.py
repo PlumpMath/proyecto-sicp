@@ -56,3 +56,9 @@ class MgrFase():
         from models import Fase
         fase = Fase.query.filter(Fase.nombre == nombre)
         return fase.listaItem
+
+    def asignarItem(self, nombre, item):
+        from models import Fase, Item
+        fase = Fase.query.filter(Fase.nombre == nombre).first_or_404()
+        fase.listaItem.append(item)
+        db.session.commit()
