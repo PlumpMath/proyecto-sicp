@@ -40,7 +40,7 @@ def poblardb():
     createItem()
     print ":cargo items:"
     createLineaBase()
-    print ":cargo lineas base y realciono con Items:"
+    print ":cargo lineas base y relaciono con Items:"
     
 @manager.command
 def dropdb():

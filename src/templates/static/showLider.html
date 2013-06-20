@@ -52,20 +52,13 @@
             </td>
         </tr> 	
 		<tr>
-			<th><a href='#' title="Click Header to Sort">Asignar</a></th>
-                        <th><a href='#' title="Click Header to Sort">Usuarios</a></th>
+			
+                        <th><a href='#' title="Click Header to Sort">LIDER DEL PROYECTO</a></th>
 			
 		</tr>
-</thead>
-       {% for user in list %}
-       <tr>
-            {% if not user in usuarios %}
-                    <td><input type=radio name=lista value="{{ user['name'] }}"></td>
-                    <td>{{ user.name }}</td> 
-            {% endif %}
-       </tr>
-       {% endfor %}
-       
+</thead>           
+                    <td>{{ lider.name }}</td> 
+    
 <tfoot>
 	    <tr id="pagerTwo">
 	        <td colspan="5">

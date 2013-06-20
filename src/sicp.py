@@ -569,13 +569,14 @@ def showProject(nombre):
     from mgrProject import MgrProject
     if g.user is None:
         return redirect(url_for('login'))
-    else:
+    else: 
         project = MgrProject().filtrar(nombre)
         form = ShowFormProject(request.form, nombre = project.nombre,
                descripcion = project.descripcion, 
                fechaDeCreacion = project.fechaDeCreacion,
                estado = project.estado,
                presupuesto = project.presupuesto)
+                           
         if request.method == 'POST':
             if request.form.get('edit', None) == "Modificar Proyecto":
                 return redirect(url_for('editProject', nombre = project.nombre))
@@ -584,17 +585,25 @@ def showProject(nombre):
             elif request.form.get('state', None) == "Modificar Estado de Proyecto":
                 return redirect(url_for('editProjectState', nombre = project.nombre))
             elif request.form.get('configLider', None) == "Asignar Lider":
-                return redirect(url_for('configLider', nombre = project.nombre)) 
+                
+                    lider = MgrProject().liderProyecto(nombre)
+                    
+                    if lider == None:               
+                         return redirect(url_for('configLider', nombre = project.nombre)) 
+                    elif lider != None:
+                         return redirect(url_for('showLider', nombre = project.nombre)) 
+                    
             elif request.form.get('asignarUsuario', None) == "Asignar Usuario":
                 return redirect(url_for('asignarUsuario', nombre = project.nombre)) 
             elif request.form.get('desasignarUsuario', None) == "Desasignar Usuario":
                 return redirect(url_for('desasignarUsuario', nombre = project.nombre))
             elif request.form.get('asignarFase', None) == "Asignar Fase":
                 return redirect(url_for('asignarFase', nombre = project.nombre))
-            
+                     
 	return render_template(app.config['DEFAULT_TPL']+'/showProject.html',
-			       conf = app.config,
-			       form = form)
+                                conf = app.config,
+                                form = form)
+                               
 @app.route('/configLider/<path:nombre>.html', methods=['GET','POST'])
 def configLider(nombre):
     """ asigna lider a proyecto """
@@ -613,7 +622,19 @@ def configLider(nombre):
 			       conf = app.config,
                                usuarios =  MgrProject().usersDeProyecto(nombre),
                                list = MgrUser().listar())
-
+                               
+@app.route('/showLider/<path:nombre>.html', methods=['GET','POST'])
+def showLider(nombre):
+    """ muestra el lider de un proyecto """
+    from mgrProject import MgrProject
+    from mgrUser import MgrUser
+    if g.user is None:
+        return redirect(url_for('login'))
+    else:
+      
+        return render_template(app.config['DEFAULT_TPL']+'/showLider.html',
+			       conf = app.config,
+                               lider = MgrProject().liderProyecto(nombre))
 
 @app.route('/asignarUsuario/<path:nombre>.html', methods=['GET','POST'])
 def asignarUsuario(nombre):
@@ -748,7 +769,7 @@ def addProject():
     return render_template(app.config['DEFAULT_TPL']+'/formProject.html',
                 conf = app.config,
                 form = CreateFormProject())
-
+                           
 @app.route('/asignarFase/<path:nombre>.html', methods=['GET','POST'])
 def asignarFase(nombre):
     """ Agrega una fase a un proyecto"""
@@ -765,16 +786,35 @@ def asignarFase(nombre):
             if form.validate():
                 fn = Fase(nombre = request.form['nombre'], descripcion = request.form['descripcion'], orden = request.form['orden'])    
                 MgrProject().asignarFase(nombre, fn)
+                project = MgrProject().filtrar(nombre)
                 flash('Se ha creado correctamente la fase')
-                return redirect(url_for('listProject'))
+                return redirect(url_for('listFasexProyecto', nombre = project.nombre))
             else:
                 return render_template(app.config['DEFAULT_TPL']+'/asignarFase.html',
                             conf = app.config,
                             form = form )
-    return render_template(app.config['DEFAULT_TPL']+'/asignarFase.html',
+        return render_template(app.config['DEFAULT_TPL']+'/asignarFase.html',
                 conf = app.config,
-                form = CreateFormFase())
-              
+                form = CreateFormFase())                                     
+                                                                                    
+                                         
+@app.route('/listFasexProyecto/<path:nombre>.html', methods=['GET','POST'])
+def listFasexProyecto(nombre):
+    """ Lista de fase que le pertenecen a un proyecto"""
+    from mgrProject import MgrProject
+    if g.user is None:
+        return redirect(url_for('login'))
+    else:
+        project = MgrProject().filtrar(nombre)
+        if request.method == 'POST':
+            if request.form.get('asignarFase', None) == "Crear fase":
+                return redirect(url_for('asignarFase', nombre = project.nombre))
+            
+        return render_template(app.config['DEFAULT_TPL']+'/listFasexProyecto.html',
+                           conf = app.config,
+                           list = MgrProject().filtrarFases(nombre))                                          
+            
+                        
 # ADMINISTRAR FASE
 
 
@@ -875,7 +915,7 @@ def deleteFase(nombre):
 
 @app.route('/addFase', methods=['GET','POST'])
 def addFase():
-    """ Agrega una fase """
+    """ Agrega una fase a un proyecto """
     from models import Fase
     from form import CreateFormFase
     from mgrFase import MgrFase
@@ -896,6 +936,8 @@ def addFase():
     return render_template(app.config['DEFAULT_TPL']+'/formFase.html',
                 conf = app.config,
                 form = CreateFormFase())
+                
+                
 # ADMINISTRAR TIPO DE ATRIBUTO
 
 

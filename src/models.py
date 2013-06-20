@@ -31,6 +31,9 @@ class User(db.Model):
     roles = db.relationship('Rol', secondary = roles, 
         backref = db.backref('users' , lazy='dynamic'))
         
+     # one to many: Relaciona User x Proyecto
+    listaproyectos = db.relationship('Proyecto', backref= 'User', lazy = 'dynamic')
+        
     def __init__(self,name=None, passwd=None, nombre=None, apellido=None, email=None, telefono=None, obs=None):
         """ constructor de user """
         self.name = name
@@ -138,6 +141,9 @@ class Proyecto(db.Model):
     
     # one to many: Relaciona Proyecto x Tipo de Item
     listaTipoDeItem = db.relationship('TipoDeItem', backref= 'Proyecto', lazy = 'dynamic')
+    
+     # one to many: Relaciona Proyecto x Ususario(Lider)
+    lider = db.Column(db.Integer, db.ForeignKey('User.idUser'))
     
     def __init__(self, nombre=None, descripcion=None, presupuesto=None, listafases = [None]):
         """ constructor de Proyecto """

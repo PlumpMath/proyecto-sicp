@@ -18,7 +18,7 @@ LANG = 'es'
 LANG_DIRECTION = 'ltr'
 YEAR = '2013'
 
-SQLALCHEMY_DATABASE_URI = 'postgresql://administrador:admin@localhost:5432/basedatos'
+SQLALCHEMY_DATABASE_URI = 'postgresql://admin:admin@localhost:5432/database'
 #SQLALCHEMY_DATABASE_URI = 'postgresql://admin:admin@localhost:5432/databasePrueba'
 
 
