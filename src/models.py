@@ -180,6 +180,7 @@ class Fase(db.Model):
         self.nombre = nombre
         self.descripcion = descripcion
         self.orden = orden
+
     
     def __repr__(self):
         return self.nombre
@@ -199,6 +200,10 @@ class Item(db.Model):
     
     # one to many: Relaciona Fase x Item 
     faseId = db.Column(db.Integer, db.ForeignKey('Fase.idFase'))
+    
+    
+    # one to many: Relaciona Fase x Item
+    #listaTipoItem = db.relationship('Item', backref='Fase', lazy = 'dynamic')
     
     # one to one: Relaciona Item x Tipo de Item
     tipoDeItemId = db.Column(db.Integer, db.ForeignKey('TipoDeItem.idTipoDeItem'))
