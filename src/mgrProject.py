@@ -83,7 +83,13 @@ class MgrProject():
         # asigna el rol al usuario
         MgrUserXRol().guardar(nombreLider, nombreRol) 
         # asigna al proyecto el usuario 
-        MgrProyectoXUser().guardar(nombre, nombreLider)
+        #MgrProyectoXUser().guardarLider(nombre, nombreLider)
+        print "nombre del lider" + nombreLider
+        print "nombre del proyecto" + nombre
+        proyecto = Proyecto.query.filter(Proyecto.nombre == nombre).first_or_404()
+        user = User.query.filter(User.name == nombreLider).first_or_404()
+        user.listaproyectos.append(proyecto)
+        db.session.commit()
 
     def asignarUsuario(self, nombre,  nameUser, nombreRol, descripcionRol):
         """
@@ -129,3 +135,20 @@ class MgrProject():
         from models import Proyecto
         proyecto = Proyecto.query.filter(Proyecto.nombre == nombre).first_or_404()
         return proyecto.users
+    
+    def liderProyecto(self, nombre):
+        from models import Proyecto
+        from models import User
+        proyecto = Proyecto.query.filter(Proyecto.nombre == nombre).first_or_404()
+        liderid = proyecto.lider
+        lider = User.query.filter(User.idUser == liderid).first_or_404()
+        return lider
+    
+    def filtrarFases(self, nombre):
+        """ filtrar items por nombre """
+        from models import Proyecto
+        from models import Fase
+        proyecto = Proyecto.query.filter(Proyecto.nombre == nombre).first_or_404()
+        return proyecto.listafases
+
+        

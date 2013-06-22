@@ -26,8 +26,14 @@
             {{ form.presupuesto.label(style="float: left; width: 105px;") }}
             {{form.presupuesto(class="form-input", style="width: 300px", readonly="readonly") }}
             {% for error in form.presupuesto.errors %} {{ error }} {% endfor %}
-            <br />
-  
+            <br />  
+            
+<!--
+            {% if lider %}
+            
+            Nombre del líder  <input class="label" type="text" name="lider" value= {{ lider.name }} style="float: center; width: 105px;"> 
+            
+            {% endif %}-->
             
             <script language="JavaScript">
                 function confirmar ( mensaje ) {

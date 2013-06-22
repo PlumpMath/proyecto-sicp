@@ -9,6 +9,7 @@ class MgrProyectoXUser():
         usuario = User.query.filter(User.name == userName).first_or_404() 
         proyecto.users.append(usuario)
         db.session.commit()         
+        
     
     def borrar(self, proyectoNombre, userName):
         """ deasigna a un proyecto un usuario"""

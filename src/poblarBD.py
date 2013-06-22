@@ -148,6 +148,7 @@ def configurarPermiso():
 def usuariosAProyecto():
     """ asigna/desasigna usuarios a proyecto """
     from mgrProject import MgrProject
+
     MgrProject().asignarUsuario("proyecto4", "juani", "desarrollador", "asigne rol a usuario")
     MgrProject().asignarUsuario("proyecto4", "fran", "desarrollador", "asigne rol a usuario")
     MgrProject().desasignarUsuario("proyecto4", "fran","desarrollador"+"-"+"proyecto4"+"-"+"fran")
