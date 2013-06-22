@@ -1,0 +1,5 @@
+manage	manage-module.html
+manage.initdb	manage-module.html#initdb
+manage.poblardb	manage-module.html#poblardb
+manage.manager	manage-module.html#manager
+manage.dropdb	manage-module.html#dropdb
