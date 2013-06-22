@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #configurar los paths
-DESDE=/home/fran/flaskadd/blog/sicp/sicpX/src
+DESDE=/home/fran/flaskadd/proyectois2/sicpX/src
 
 cd $DESDE
 epydoc $DESDE/manage.py
